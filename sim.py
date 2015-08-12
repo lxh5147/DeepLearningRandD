@@ -8,9 +8,8 @@ import theano.tensor as T
 import os
 import sys
 import time
-
-
 import numpy
+from theano import  config
 
 # start-snippet-1
 class PerceptronLayer(object):
@@ -176,20 +175,20 @@ def load_data():
                         high=1.0,
                         size=(500, word_embeddinig_dim * 2)
                     )
-                ))
+                ),config.floatX)
                   , theano.shared(numpy.asarray(
                     rng.uniform(
                         low=0.,
                         high=1.0,
                         size=(100, word_embeddinig_dim * 2)
                     )
-                )) ,
+                ),config.floatX) ,
                  theano.shared(numpy.asarray(
                     rng.uniform(
                         low=0.,
                         high=1.0,
                         size=(20, word_embeddinig_dim * 2)
-                    ))
+                    ),config.floatX)
                 )  ]  
     return dataset
 
@@ -412,4 +411,5 @@ def test_sim(learning_rate=0.01, L1_reg=0.00, L2_reg=0.0001, n_epochs=1000,
 
 
 if __name__ == '__main__':
+    theano.config.floatX = "float64"
     test_sim()
