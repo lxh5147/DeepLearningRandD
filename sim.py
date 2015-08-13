@@ -62,6 +62,7 @@ class PerceptronLayer(object):
                     high=numpy.sqrt(6. / (n_in + n_out)),
                     size=(n_in, n_out)
                 )
+                , config.floatX
             )
             if activation == theano.tensor.nnet.sigmoid:
                 W_values *= 4
@@ -69,7 +70,7 @@ class PerceptronLayer(object):
             W = theano.shared(value=W_values, name='W', borrow=True)
 
         if b is None:
-            b_values = numpy.zeros((n_out,))
+            b_values = numpy.zeros((n_out,), config.floatX )
             b = theano.shared(value=b_values, name='b', borrow=True)
 
         self.W = W
@@ -175,21 +176,21 @@ def load_data():
                         high=1.0,
                         size=(500, word_embeddinig_dim * 2)
                     )
-                ),config.floatX)
+                ,config.floatX))
                   , theano.shared(numpy.asarray(
                     rng.uniform(
                         low=0.,
                         high=1.0,
                         size=(100, word_embeddinig_dim * 2)
                     )
-                ),config.floatX) ,
+                ,config.floatX)) ,
                  theano.shared(numpy.asarray(
                     rng.uniform(
                         low=0.,
                         high=1.0,
                         size=(20, word_embeddinig_dim * 2)
-                    ),config.floatX)
-                )  ]  
+                   ) 
+                ,config.floatX))  ]  
     return dataset
 
 def test_sim(learning_rate=0.01, L1_reg=0.00, L2_reg=0.0001, n_epochs=1000,
@@ -236,7 +237,7 @@ def test_sim(learning_rate=0.01, L1_reg=0.00, L2_reg=0.0001, n_epochs=1000,
 
     # allocate symbolic variables for the data
     index = T.lscalar()  # index to a [mini]batch
-    x = T.matrix('x')  # query term1 query term
+    x = T.matrix('x', config.floatX)  # query term1 query term
    
                         # [int] labels
                         
@@ -411,7 +412,7 @@ def test_sim(learning_rate=0.01, L1_reg=0.00, L2_reg=0.0001, n_epochs=1000,
 
 
 if __name__ == '__main__':
-    theano.config.floatX = "float64"
+    theano.config.floatX = "float32"
     print "Git test\n"
     print "A new branch is added"
     test_sim()
