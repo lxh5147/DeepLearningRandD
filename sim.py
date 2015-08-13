@@ -413,4 +413,5 @@ def test_sim(learning_rate=0.01, L1_reg=0.00, L2_reg=0.0001, n_epochs=1000,
 if __name__ == '__main__':
     theano.config.floatX = "float64"
     print "Git test\n"
+    print "A new branch is added"
     test_sim()
